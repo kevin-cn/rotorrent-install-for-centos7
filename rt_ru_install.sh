@@ -123,10 +123,8 @@ echo -e "${yellow}开始rtorrent配置"
 echo -e "${plain}============================================================"
 
 #rtorrent.rc配置文件下载
-cd ~
-wget https://taiwx.com/rtcfg/rtorrent_config.zip
-unzip rtorrent_config.zip	
-rm rtorrent_config.zip -f
+cd /root
+wget --no-check-certificate https://raw.githubusercontent.com/kevin-cn/rotorrent-install-for-centos7/master/.rtorrent.rc
 webroot_tt=${webroot//\//\\\/}
 sed -i 's/\/home\/wwwroot\/default/'$webroot_tt'/g' .rtorrent.rc
 
