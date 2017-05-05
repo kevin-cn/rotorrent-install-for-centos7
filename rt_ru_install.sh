@@ -227,6 +227,9 @@ echo "程序安装已结束，请到https://sadsu.com/?p=210查看如何配置RF
 
 show_end(){
 service nginx restart
+if [ $webtype = "vestacp(nginx+apache)" ]; then
+service httpd restart
+fi
 echo "========================================================================"
 echo "=                rtorrent && rutorrent 安装完毕                         ="
 echo "=     使用   {yellow}http://$hostip/rutorrent ${plain}开始访问你的页面吧                  ="
