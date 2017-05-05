@@ -64,7 +64,16 @@ yum install -y gcc-c++ libtool libsigc++20 libsigc++20-devel openssl-devel ncurs
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
 rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm
+#安装 ffmpeg，mediainfo
 yum install -y ffmpeg mediainfo
+#安装rar
+cd /tmp
+wget http://www.rarsoft.com/rar/rarlinux-x64-5.5.b1.tar.gz
+tar zxvf rarlinux-x64-5.5.b1.tar.gz
+cd rar
+make
+cd /tmp
+rm rar* -rf
 #配置ld
 echo "/usr/local/lib/" >> /etc/ld.so.conf
 ldconfig
