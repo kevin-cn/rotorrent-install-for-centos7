@@ -54,7 +54,7 @@ echo -e "${plain}============================================================"
 echo -e "${yellow}开始安装支持程序"
 echo -e "${plain}============================================================"
 #安装需求配件
-yum install -y gcc-c++ libtool libsigc++20 libsigc++20-devel ncurses* xmlrpc-c-devel epel-release zip unzip
+yum install -y gcc-c++ libtool libsigc++20 libsigc++20-devel openssl-devel ncurses* xmlrpc-c-devel epel-release zip unzip
 #安装ffmpeg以及mediainfo
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
@@ -113,6 +113,8 @@ cd ~
 wget https://taiwx.com/rtcfg/rtorrent_config.zip
 unzip rtorrent_config.zip	
 rm rtorrent_config.zip -f
+webroot_tt=${webroot//\//\\\/}
+sed -i 's/\/home\/wwwroot\/default/'$webroot_tt'/g' .rtorrent.rc
 
 #主应用目录
 mkdir /home/rtorrent 
@@ -123,13 +125,13 @@ mkdir /home/rtorrent/.session
 #监控目录，用于rss下载，存放到这个目录里面的文件会自动被下载，设置轮询时长目前是30分钟，可以在.rottent.rc文件中自定义修改
 mkdir /home/rtorrent/.watch 
 
-if [ $webtype != "lnmp" ]; then
+if [ $webtype = "lnmp" ]; then
     chown -R www:www /home/rtorrent
-elif [ $webtype != "vestacp(nginx)" ]; then
+elif [ $webtype = "vestacp(nginx)" ]; then
     chown -R admin:admin /home/rtorrent
-elif [ $webtype != "vestacp(nginx+apache)" ]; then
+elif [ $webtype = "vestacp(nginx+apache)" ]; then
     chown -R admin:admin /home/rtorrent
-elif [ $webtype != "other" ]; then
+elif [ $webtype = "other" ]; then
     chown -R www:www /home/rtorrent
 fi
 
