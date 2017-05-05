@@ -174,6 +174,7 @@ rm ruTorrent-master -rf
 wget -O ruTorrent-3.7.zip https://bintray.com/novik65/generic/download_file?file_path=ruTorrent-3.7.zip
 unzip -q ruTorrent-3.7.zip
 mv ruTorrent-master ${webroot}/rutorrent
+rm ruTorrent-* -rf
 }
 
 rutorrent_config(){
