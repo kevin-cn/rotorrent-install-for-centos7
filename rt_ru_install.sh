@@ -1,5 +1,5 @@
 #!/bin/bash
-# rtorrent&Rutorrent/CentOS7 installer v0.32
+# rtorrent&Rutorrent/CentOS7 installer v0.33
 #----------------------------------------------------------#
 #                  Variables&Functions                     #
 #----------------------------------------------------------#
@@ -62,7 +62,7 @@ echo -e "${plain}============================================================"
 echo -e "${yellow}开始安装支持程序"
 echo -e "${plain}============================================================"
 #安装需求配件
-yum install -y gcc-c++ libtool libsigc++20 libsigc++20-devel openssl-devel ncurses* xmlrpc-c-devel epel-release zip unzip
+yum install -y gcc-c++ libtool libsigc++20 libsigc++20-devel openssl-devel ncurses* xmlrpc-c-devel epel-release zip unzip screen
 #安装ffmpeg以及mediainfo
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
 rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
@@ -186,14 +186,19 @@ echo -e "${plain}============================================================"
 echo -e "${yellow}开始rutorrent配置"
 echo -e "${plain}============================================================"
 if [ $webtype = "lnmp" ]; then
+    chown -R www:www ${webroot}/rutorrent
     config_lnmp
 elif [ $webtype = "vestacp(nginx)" ]; then
+    chown -R admin:admin ${webroot}/rutorrent
     config_vestacp_1
 elif [ $webtype = "vestacp(nginx+apache)" ]; then
+    chown -R admin:admin ${webroot}/rutorrent
     config_vestacp_2
 elif [ $webtype = "apache+phpfpm" ]; then
+    chown -R apache:apache ${webroot}/rutorrent
     config_apache    
 elif [ $webtype = "other" ]; then
+    chown -R www:www ${webroot}/rutorrent
     show_howto
 fi
 }
