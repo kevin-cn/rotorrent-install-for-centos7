@@ -189,6 +189,8 @@ elif [ $webtype = "vestacp(nginx)" ]; then
     config_vestacp_1
 elif [ $webtype = "vestacp(nginx+apache)" ]; then
     config_vestacp_2
+elif [ $webtype = "apache+phpfpm" ]; then
+    config_apache    
 elif [ $webtype = "other" ]; then
     show_howto
 fi
@@ -196,7 +198,7 @@ fi
 
 config_lnmp(){
 #设置目录读取权限
-sed -i 's/:\/tmp\/:\/proc\//:\/tmp\/:\/proc\/:\/usr\/bin\/:usr\/local\/bin\/:\/home\/rtorrent/g' /usr/local/nginx/conf/fastcgi.conf
+sed -i 's/:\/tmp\/:\/proc\//:\/tmp\/:\/proc\/:\/usr\/bin\/:\/usr\/local\/bin\/:\/home\/rtorrent/g' /usr/local/nginx/conf/fastcgi.conf
 #设置RPC2/节点
 sed -i '/include enable-php.conf;/a\        location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /usr/local/nginx/conf/nginx.conf
 #重启nginx
@@ -205,7 +207,7 @@ service nginx restart
 
 config_vestacp_1(){
 #设置目录读取权限
-sed -i '/fastcgi_param  REDIRECT_STATUS    200;/a\        fastcgi_param PHP_ADMIN_VALUE "open_basedir=$document_root\/:\/tmp\/:\/proc\/:\/usr\/bin\/:usr\/local\/bin\/:\/home\/rtorrent";' /etc/nginx/fastcgi_params
+sed -i '/fastcgi_param  REDIRECT_STATUS    200;/a\        fastcgi_param PHP_ADMIN_VALUE "open_basedir=$document_root\/:\/tmp\/:\/proc\/:\/usr\/bin\/:\/usr\/local\/bin\/:\/home\/rtorrent";' /etc/nginx/fastcgi_params
 #设置RPC2/节点
 sed -i '/error_page  403 \/error\/404.html;/a\    location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /home/admin/conf/web/nginx.conf
 #重启nginx
@@ -214,11 +216,21 @@ service nginx restart
 
 config_vestacp_2(){
 #设置目录读取权限
-sed -i 's/\/public_html:\/home\/admin\/tmp/\/public_html:\/home\/admin\/tmp:\/usr\/bin\/:usr\/local\/bin\/:\/home\/rtorrent/g' /home/admin/conf/web/httpd.conf
+sed -i 's/\/public_html:\/home\/admin\/tmp/\/public_html:\/home\/admin\/tmp:\/usr\/bin\/:\/usr\/local\/bin\/:\/home\/rtorrent/g' /home/admin/conf/web/httpd.conf
 #设置RPC2/节点
 sed -i '/.error.log error;/a\    location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /home/admin/conf/web/nginx.conf
-#重启nginx
+#重启nginx,apache
 service nginx restart
+service httpd restart
+}
+
+config_apache(){
+#设置目录读取权限
+echo "php_admin_value open_basedir \"/var/www/html/:/tmp/:/proc/:/usr/bin/:/usr/local/bin/:/home/rtorrent\"" >> /etc/httpd/conf.d/php.conf
+#设置RPC2/节点
+echo "ProxyPass /RPC2 scgi://localhost:5000/" >> /etc/httpd/conf.d/php.conf
+#重启apache
+service httpd restart
 }
 
 show_howto(){
@@ -227,14 +239,11 @@ echo "程序安装已结束，请到https://sadsu.com/?p=210查看如何配置RF
 
 show_end(){
 service rtorrent start
-if [ $webtype = "vestacp(nginx+apache)" ]; then
-service httpd restart
-fi
-echo "========================================================================"
-echo "=                rtorrent && rutorrent 安装完毕                         ="
-echo "=     使用   {yellow}http://$hostip/rutorrent ${plain}开始访问你的页面吧                  ="
-echo "=                                                                      ="
-echo "========================================================================"
+echo -e "========================================================================"
+echo -e "=                rtorrent && rutorrent 安装完毕                         ="
+echo -e "= 使用   ${yellow}http://$hostip/rutorrent ${plain}开始访问你的页面吧    ="
+echo -e "=                                                                      ="
+echo -e "========================================================================"
 }
 
 clear
@@ -264,7 +273,7 @@ echo && echo -e "  请选择web服务器类型
  ————————————
  ${yellow}4.${plain} 其他环境
  ———————————— " && echo
-	stty erase '^H' && read -p " 请输入数字 [1-4]:" num
+	stty erase '^H' && read -p " 请输入数字 [1-5]:" num
 case "$num" in
 	1)
 	webtype="lnmp"
@@ -276,6 +285,9 @@ case "$num" in
 	webtype="vestacp(nginx+apache)"
 	;;
 	4)
+	webtype="apache+phpfpm"
+	;;
+	5)
 	webtype="other"
 	;;
 	*)
