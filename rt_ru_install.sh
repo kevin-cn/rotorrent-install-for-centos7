@@ -72,7 +72,7 @@ yum install -y ffmpeg mediainfo
 #安装rar
 cd /tmp
 wget http://www.rarsoft.com/rar/rarlinux-x64-5.5.b1.tar.gz
-tar zxvf rarlinux-x64-5.5.b1.tar.gz
+tar zxf rarlinux-x64-5.5.b1.tar.gz
 cd rar
 make
 cd /tmp
@@ -172,7 +172,7 @@ cd /tmp
 rm ruTorrent-3.7.zip -f
 rm ruTorrent-master -rf
 wget -O ruTorrent-3.7.zip https://bintray.com/novik65/generic/download_file?file_path=ruTorrent-3.7.zip
-unzip ruTorrent-3.7.zip
+unzip -q ruTorrent-3.7.zip
 mv ruTorrent-master ${webroot}/rutorrent
 }
 
