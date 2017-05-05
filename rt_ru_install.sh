@@ -145,6 +145,8 @@ elif [ $webtype = "vestacp(nginx)" ]; then
     chown -R admin:admin /home/rtorrent
 elif [ $webtype = "vestacp(nginx+apache)" ]; then
     chown -R admin:admin /home/rtorrent
+elif [ $webtype = "apache+phpfpm" ]; then
+    chown -R apache:apache /home/rtorrent    
 elif [ $webtype = "other" ]; then
     chown -R www:www /home/rtorrent
 fi
