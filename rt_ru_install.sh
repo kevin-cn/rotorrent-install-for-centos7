@@ -152,10 +152,7 @@ fi
 #开机启动文件下载
 cd /etc/init.d
 #避免二次下载重复
-rm rtorrent* -f 
-wget https://taiwx.com/rtcfg/rtorrent_init.zip
-unzip rtorrent_init.zip
-rm rtorrent_init.zip -f
+wget --no-check-certificate https://raw.githubusercontent.com/kevin-cn/rotorrent-install-for-centos7/master/rtorrent
 chmod 755 rtorrent
 chkconfig --add rtorrent
 chkconfig rtorrent on
