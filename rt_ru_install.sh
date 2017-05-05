@@ -1,5 +1,5 @@
 #!/bin/bash
-# rtorrent&Rutorrent/CentOS7 installer v.01
+# rtorrent&Rutorrent/CentOS7 installer v0.32
 #----------------------------------------------------------#
 #                  Variables&Functions                     #
 #----------------------------------------------------------#
@@ -242,8 +242,8 @@ echo "程序安装已结束，请到https://sadsu.com/?p=210查看如何配置RF
 show_end(){
 service rtorrent start
 echo -e "========================================================================"
-echo -e "=                rtorrent && rutorrent 安装完毕                         ="
-echo -e "= 使用   ${yellow}http://$hostip/rutorrent ${plain}开始访问你的页面吧    ="
+echo -e "=                rtorrent && rutorrent 安装完毕                        ="
+echo -e "= 使用   ${yellow}http://$hostip/rutorrent ${plain}开始访问你的页面吧             ="
 echo -e "=                                                                      ="
 echo -e "========================================================================"
 }
