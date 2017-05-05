@@ -206,7 +206,7 @@ config_vestacp_1(){
 #设置目录读取权限
 sed -i '/fastcgi_param  REDIRECT_STATUS    200;/a\        fastcgi_param PHP_ADMIN_VALUE "open_basedir=$document_root\/:\/tmp\/:\/proc\/:\/usr\/bin\/:usr\/local\/bin\/:\/home\/rtorrent";' /etc/nginx/fastcgi_params
 #设置RPC2/节点
-sed -i '/error_page  403 \/error\/404.html;/a\        location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /home/admin/conf/web/nginx.conf
+sed -i '/error_page  403 \/error\/404.html;/a\    location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /home/admin/conf/web/nginx.conf
 #重启nginx
 service nginx restart
 }
@@ -215,7 +215,7 @@ config_vestacp_2(){
 #设置目录读取权限
 sed -i '/fastcgi_param  REDIRECT_STATUS    200;/a\        fastcgi_param PHP_ADMIN_VALUE "open_basedir=$document_root\/:\/tmp\/:\/proc\/:\/usr\/bin\/:usr\/local\/bin\/:\/home\/rtorrent";' /etc/nginx/fastcgi_params
 #设置RPC2/节点
-sed -i '/error_log  \/var\/log\/httpd\/domains\/test.org.error.log error;/a\        location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /home/admin/conf/web/nginx.conf
+sed -i '/.error.log error;/a\    location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /home/admin/conf/web/nginx.conf
 #重启nginx
 service nginx restart
 }
