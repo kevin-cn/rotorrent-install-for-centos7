@@ -272,8 +272,10 @@ echo && echo -e "  请选择web服务器类型
  ${yellow}2.${plain} VestaCP环境（nginx）
  ———————————— 
  ${yellow}3.${plain} VestaCP环境（nginx+Apache）
+ ———————————— 
+ ${yellow}4.${plain} Apache + PHP-FPM 环境
  ————————————
- ${yellow}4.${plain} 其他环境
+ ${yellow}5.${plain} 其他环境
  ———————————— " && echo
 	stty erase '^H' && read -p " 请输入数字 [1-5]:" num
 case "$num" in
