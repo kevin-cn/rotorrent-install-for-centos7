@@ -77,11 +77,6 @@ cd rar
 make
 cd /tmp
 rm rar* -rf
-#配置ld
-echo "/usr/local/lib/" >> /etc/ld.so.conf
-ldconfig
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-
 }
 
 install_libtorrent(){
@@ -108,6 +103,10 @@ echo -e "${plain}============================================================"
 echo -e "${yellow}开始安装rtorrent"
 echo -e "${plain}============================================================"
 cd /tmp
+#配置ld
+echo "/usr/local/lib/" >> /etc/ld.so.conf
+ldconfig
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 wget http://rtorrent.net/downloads/rtorrent-0.9.6.tar.gz
 tar -zxf rtorrent-0.9.6.tar.gz
 cd rtorrent-0.9.6
