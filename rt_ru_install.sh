@@ -272,7 +272,7 @@ install_rutorrent
 
 rutorrent_config
 
-
+service rtorrent start
 
 
 
