@@ -226,7 +226,7 @@ echo "程序安装已结束，请到https://sadsu.com/?p=210查看如何配置RF
 }
 
 show_end(){
-service nginx restart
+service rtorrent start
 if [ $webtype = "vestacp(nginx+apache)" ]; then
 service httpd restart
 fi
