@@ -48,6 +48,9 @@ opsy=$( get_opsy )
 arch=$( uname -m )
 lbit=$( getconf LONG_BIT )
 kern=$( uname -r )
+hostip=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
+[ -z ${hostip} ] && hostip=$(ip route get 8.8.8.8 | awk 'NR==1 {print $NF}')
+
 
 [[ $opsy =~ "5." ]] && echo -e "${red}Error:${plain} This script only didn't support centos5!" && exit 1
 [[ $opsy =~ "6." ]] && echo -e "${red}Error:${plain} This script only didn't support centos6!" && exit 1
@@ -208,6 +211,28 @@ sed -i '/error_page  403 \/error\/404.html;/a\        location \/RPC2   \{  incl
 service nginx restart
 }
 
+config_vestacp_2(){
+#设置目录读取权限
+sed -i '/fastcgi_param  REDIRECT_STATUS    200;/a\        fastcgi_param PHP_ADMIN_VALUE "open_basedir=$document_root\/:\/tmp\/:\/proc\/:\/usr\/bin\/:usr\/local\/bin\/:\/home\/rtorrent";' /etc/nginx/fastcgi_params
+#设置RPC2/节点
+sed -i '/error_log  \/var\/log\/httpd\/domains\/test.org.error.log error;/a\        location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /home/admin/conf/web/nginx.conf
+#重启nginx
+service nginx restart
+}
+
+show_howto(){
+echo "程序安装已结束，请到https://sadsu.com/?p=210查看如何配置RFC2节点以及设置php_admin_value open_basedir的目录访问权限"
+}
+
+show_end(){
+service nginx restart
+echo "========================================================================"
+echo "=                rtorrent && rutorrent 安装完毕                         ="
+echo "=     使用   {yellow}http://$hostip/rutorrent ${plain}开始访问你的页面吧                  ="
+echo "=                                                                      ="
+echo "========================================================================"
+}
+
 clear
 echo "---------- System Information ----------"
 echo " OS      : $opsy"
@@ -276,7 +301,7 @@ install_rutorrent
 
 rutorrent_config
 
-service rtorrent start
+show_end
 
 
 
