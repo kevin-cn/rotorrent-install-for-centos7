@@ -244,6 +244,34 @@ show_howto(){
 echo "程序安装已结束，请到https://sadsu.com/?p=210查看如何配置RFC2节点以及设置php_admin_value open_basedir的目录访问权限"
 }
 
+getvestacpwwwroot(){
+conftxt=$(cat /home/admin/conf/web/nginx.conf)
+hostnametmp="${conftxt#*server_name}"
+hostnamef=${hostnametmp%%;*}
+#hostname=$(grep -o "^\S\+" <<<  $test1)
+hostname=$(cut -d' ' -f1 <<<  $hostnamef)
+echo $hostname
+}
+
+
+getwwwroot(){
+if [ $webtype = "lnmp" ]; then
+    wwwroot_ls="/home/wwwroot/default" 
+elif [ $webtype = "vestacp(nginx)" ]; then
+    hostname1=$(getvestacpwwwroot)
+	wwwroot_ls="/home/admin/web/${hostname1}/public_html" 
+elif [ $webtype = "vestacp(nginx+apache)" ]; then
+    hostname1=$(getvestacpwwwroot)
+	wwwroot_ls="/home/admin/web/${hostname1}/public_html" 
+elif [ $webtype = "apache+phpfpm" ]; then
+    wwwroot_ls="/var/www/html/" 
+elif [ $webtype = "other" ]; then
+    wwwroot_ls="/var/www/html/" 
+fi
+echo  $wwwroot_ls
+}
+
+
 show_end(){
 service rtorrent start
 echo -e "========================================================================"
@@ -265,10 +293,6 @@ echo " URL: https://sadsu.com/?p=210"
 echo "----------------------------------------"
 echo
 
-
-echo "  请输入web网址根目录:"
-    read -p "(默认地址: /home/wwwroot/default):" webroot
-    [ -z ${webroot} ] && webroot="/home/wwwroot/default"
 
 echo && echo -e "  请选择web服务器类型
   
@@ -304,6 +328,14 @@ case "$num" in
 	;;
 esac
 
+
+ls_wwwroot=$( getwwwroot )
+
+echo "  请输入web网址根目录:"
+    read -p "(默认地址: $ls_wwwroot):" webroot
+    [ -z ${webroot} ] && webroot=$ls_wwwroot
+
+
 clear
 echo -e "===========================================================
                          程序准备安装	
@@ -327,9 +359,4 @@ install_rutorrent
 rutorrent_config
 
 show_end
-
-
-
-
-
 
