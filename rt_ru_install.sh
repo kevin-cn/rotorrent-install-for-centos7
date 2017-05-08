@@ -1,5 +1,5 @@
 #!/bin/bash
-# rtorrent&Rutorrent/CentOS7 installer v0.33
+# rtorrent&Rutorrent/CentOS7 installer v0.4
 #----------------------------------------------------------#
 #                  Variables&Functions                     #
 #----------------------------------------------------------#
@@ -25,9 +25,11 @@ elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
 fi
 
-if [ $release != "centos" ]; then
-	echo -e "${red}Error:${plain} This script only support centos!" && exit 1
-fi
+#安装程序只支持centos
+[ $release != "centos" ] &&	echo -e "${red}Error:${plain} This script only support centos!" && exit 1
+release_version=$(grep -o "[0-9]" /etc/redhat-release |head -n1)
+#安装程序不支持centos5
+[ "$release_version" -eq 5 ] && echo -e "${red}Error:${plain} This script only didn't support centos5!" && exit 1
 
 get_opsy() {
     [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
@@ -52,8 +54,8 @@ hostip=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | 
 [ -z ${hostip} ] && hostip=$(ip route get 8.8.8.8 | awk 'NR==1 {print $NF}')
 
 
-[[ $opsy =~ "5." ]] && echo -e "${red}Error:${plain} This script only didn't support centos5!" && exit 1
-[[ $opsy =~ "6." ]] && echo -e "${red}Error:${plain} This script only didn't support centos6!" && exit 1
+
+
 
 install_pre(){
 echo -e "${plain} "
@@ -64,9 +66,13 @@ echo -e "${plain}============================================================"
 #安装需求配件
 yum install -y gcc-c++ libtool libsigc++20 libsigc++20-devel openssl-devel ncurses* xmlrpc-c-devel epel-release zip unzip screen
 #安装ffmpeg以及mediainfo
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
-rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm
+if [ "$release_version" -eq 7 ]; then
+	rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+	rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+	rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm
+else
+	yum localinstall -y --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-6.noarch.rpm https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-6.noarch.rpm
+fi
 #安装 ffmpeg，mediainfo
 yum install -y ffmpeg mediainfo
 #安装rar
