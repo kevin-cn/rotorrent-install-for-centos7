@@ -1,5 +1,6 @@
 #!/bin/bash
-# rtorrent&Rutorrent/CentOS7 installer v0.4
+# rtorrent&Rutorrent/CentOS7 installer v0.5
+#0.5版本增加自动添加防火墙端口
 # 安装说明可参见 https://sadsu.com/?p=210
 
 #----------------------------------------------------------#
@@ -252,6 +253,53 @@ show_howto(){
 echo "程序安装已结束，请到https://sadsu.com/?p=210查看如何配置RFC2节点以及设置php_admin_value open_basedir的目录访问权限"
 }
 
+config_firewall() {
+    if [ "$release_version" -eq 6 ]; then
+        /etc/init.d/iptables status > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            iptables -L -n | grep -i 6960 > /dev/null 2>&1
+            if [ $? -ne 0 ]; then
+                iptables -I INPUT -m multiport -p tcp --dport 5000,6960,51001:51250 -j ACCEPT
+                /etc/init.d/iptables save
+                /etc/init.d/iptables restart
+            else
+                echo -e "${green}Info:${plain} port ${green}6960${plain} already be enabled."
+            fi
+        else
+            echo -e "${yellow}Warning:${plain} iptables looks like shutdown or not installed, please enable port 6960 51001:51250 manually if necessary."
+        fi
+    elif [ "$release_version" -eq 7 ]; then
+        systemctl status firewalld > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            firewall-cmd --permanent --zone=public --add-port=5000/tcp
+			firewall-cmd --permanent --zone=public --add-port=6960/tcp
+			firewall-cmd --permanent --zone=public --add-port=51001-51250/tcp
+            firewall-cmd --reload
+        else
+		   systemctl status iptables > /dev/null 2>&1
+		   if [ $? -eq 0 ]; then
+				iptables -L -n | grep -i 6960 > /dev/null 2>&1
+				if [ $? -ne 0 ]; then
+					iptables -I INPUT -m multiport -p tcp --dport 5000,6960,51001:51250 -j ACCEPT
+					/usr/libexec/iptables/iptables.init save
+					service iptables restart
+				fi
+		   else
+				echo -e "${yellow}Warning:${plain} firewalld looks like not running, try to start..."
+				systemctl start firewalld
+				if [ $? -eq 0 ]; then
+					firewall-cmd --permanent --zone=public --add-port=5000/tcp
+					firewall-cmd --permanent --zone=public --add-port=6960/tcp
+					firewall-cmd --permanent --zone=public --add-port=51001-51250/tcp
+					firewall-cmd --reload
+				else
+					echo -e "${yellow}Warning:${plain} Start firewalld failed, please enable port 6960 51001:51250 manually if necessary."
+				fi
+		   fi
+        fi
+    fi
+}
+
 getvestacpwwwroot(){
 conftxt=$(cat /home/admin/conf/web/nginx.conf)
 hostnametmp="${conftxt#*server_name}"
@@ -365,6 +413,8 @@ rtorrent_config
 install_rutorrent
 
 rutorrent_config
+
+config_firewall
 
 show_end
 
