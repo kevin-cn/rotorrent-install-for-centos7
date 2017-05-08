@@ -6,7 +6,8 @@ rtorrent &amp; rutorrent install for centos7
 
 
 目前支持 lnmp安装完毕，vestacp安装完毕，apache+php-fpm安装完毕的环境
-安装方法
+安装方法：
+
 cd /root
 
 wget --no-check-certificate https://raw.githubusercontent.com/kevin-cn/rotorrent-install-for-centos7/master/rt_ru_install.sh
