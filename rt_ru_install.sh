@@ -1,5 +1,7 @@
 #!/bin/bash
 # rtorrent&Rutorrent/CentOS7 installer v0.4
+# 安装说明可参见 https://sadsu.com/?p=210
+
 #----------------------------------------------------------#
 #                  Variables&Functions                     #
 #----------------------------------------------------------#
