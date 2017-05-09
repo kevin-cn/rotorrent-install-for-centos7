@@ -11,7 +11,8 @@ plain='\033[0m'
 hostip=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | egrep -v "^192\.168|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-2]\.|^10\.|^127\.|^255\.|^0\." | head -n 1 )
     [ -z ${hostip} ] && hostip=$(ip route get 8.8.8.8 | awk 'NR==1 {print $NF}')
 
-	get_char() {
+release_version=$(grep -o "[0-9]" /etc/redhat-release |head -n1)
+get_char() {
     SAVEDSTTY=`stty -g`
     stty -echo
     stty cbreak
