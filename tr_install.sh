@@ -214,6 +214,18 @@ echo "# Intro: https://sadsu.com/?p=16                              #"
 echo "# Author: kevin <yanglc@sadsu.com>                           #"
 echo "###############################################################"
 echo
+echo -e "${yellow}"
+echo  "目前已知在centos7环境中启动transmission服务端可能会卡死         "
+echo  "如果你安装tr_install.sh卡死在                     	     "
+echo  "Starting transmission-daemon (via systemctl):                "
+echo  "可按ctrl+C强行跳出                                            "
+echo  "再运行centos7补丁进行修复即可                                  "
+echo  "运行补丁程序 ：                                               "
+echo  "wget https://raw.githubusercontent.com/kevin-cn/rotorrent-install-for-centos7/master/tr_centos7_patch.sh   "
+echo  "chmod +x tr_centos7_patch.sh"
+echo  "./tr_centos7_patch.sh"
+echo -e "{plain}"
+echo
 
 get_os_info
 
