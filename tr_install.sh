@@ -110,10 +110,8 @@ yum install  transmission transmission-daemon -y
 }
 
 conf_transmission(){
-mkdir /var/lib/transmission/Downloads
-chown -R transmission:transmission /var/lib/transmission/Downloads
 #启动transmission，生成配置文件
-service transmission-daemon start
+service transmission-daemon start &
 #结束transmission进程，准备修改配置文件
 service transmission-daemon stop
 killall transmission-daemon
@@ -128,6 +126,8 @@ sed -i 's/"rpc-username": ""/"rpc-username": "'$username'"/g' /var/lib/transmiss
 sed -i 's/"rpc-whitelist-enabled": true/"rpc-whitelist-enabled": false/g' /var/lib/transmission/settings.json
 sed -i "/"rpc-password"/d" /var/lib/transmission/settings.json
 sed -i '/"rpc-enabled": true,/a\    "rpc-password": "'$upwd'",' /var/lib/transmission/settings.json
+mkdir /var/lib/transmission/Downloads
+chown -R transmission:transmission /var/lib/transmission/Downloads
 #安装美化插件
 wget https://github.com/ronggang/transmission-web-control/raw/master/release/tr-control-easy-install-en-http.sh --no-check-certificate
 bash tr-control-easy-install-en-http.sh
