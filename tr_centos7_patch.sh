@@ -157,4 +157,4 @@ char=`get_char`
 conf_transmission
 config_firewall
 show_end
-service transmission-daemon start
+service transmission-daemon start &
