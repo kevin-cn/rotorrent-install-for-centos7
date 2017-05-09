@@ -254,5 +254,5 @@ install_pre
 install_transmission
 conf_transmission
 config_firewall
-service transmission-daemon start
+service transmission-daemon start &
 show_end
