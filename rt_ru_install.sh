@@ -338,6 +338,15 @@ echo -e "=======================================================================
 }
 
 clear
+echo
+echo "###############################################################"
+echo "# rTorrent+ruTorrent Auto Installer                           #"
+echo "# System Supported: CentOS 6+                                 #"
+echo "# Intro: https://sadsu.com/?p=210                              #"
+echo "# Author: kevin <yanglc@sadsu.com>                           #"
+echo "###############################################################"
+echo
+
 echo "---------- System Information ----------"
 echo " OS      : $opsy"
 echo " Arch    : $arch ($lbit Bit)"
@@ -393,6 +402,7 @@ echo "  请输入web网址根目录:"
 
 
 clear
+
 echo -e "===========================================================
                          程序准备安装	
      你的服务器环境变量如下：
