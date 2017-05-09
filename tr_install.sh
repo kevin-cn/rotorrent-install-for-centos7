@@ -211,7 +211,7 @@ echo "###############################################################"
 echo "# Transmission Auto Installer                                 #"
 echo "# System Supported: CentOS 5+                                 #"
 echo "# Intro: https://sadsu.com/?p=16                              #"
-echo "# Author: kevin <yanglci@sadsu.com>                           #"
+echo "# Author: kevin <yanglc@sadsu.com>                           #"
 echo "###############################################################"
 echo
 
