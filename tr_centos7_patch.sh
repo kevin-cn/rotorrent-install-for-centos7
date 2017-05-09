@@ -86,7 +86,7 @@ config_firewall() {
 		   if [ $? -eq 0 ]; then
 				iptables -L -n | grep -i 51413 > /dev/null 2>&1
 				if [ $? -ne 0 ]; then
-					iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 51413 -j ACCEPT
+					iptables -I INPUT -m multiport -p tcp --dport 9091,51413,49153:65534 -j ACCEPT
 					/usr/libexec/iptables/iptables.init save
 					service iptables restart
 				fi
