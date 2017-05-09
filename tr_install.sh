@@ -224,7 +224,7 @@ echo  "运行补丁程序 ：                                               "
 echo  "wget https://raw.githubusercontent.com/kevin-cn/rotorrent-install-for-centos7/master/tr_centos7_patch.sh   "
 echo  "chmod +x tr_centos7_patch.sh"
 echo  "./tr_centos7_patch.sh"
-echo -e "{plain}"
+echo -e "${plain}"
 echo
 
 get_os_info
