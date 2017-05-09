@@ -23,6 +23,7 @@ hostip=$( ip addr | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | 
 
 	
 conf_transmission(){
+service transmission-daemon stop
 killall transmission-daemon
 echo -e "${plain} "
 echo -e "${plain} "
