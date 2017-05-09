@@ -120,8 +120,10 @@ conf_transmission(){
 #启动transmission，生成配置文件
 service transmission-daemon start &
 #结束transmission进程，准备修改配置文件
+sleep 5s 
 service transmission-daemon stop
 killall transmission-daemon
+sleep 5s
 echo -e "${plain} "
 echo -e "${plain} "
 echo -e "${plain}============================================================"
