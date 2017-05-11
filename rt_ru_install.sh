@@ -1,5 +1,5 @@
 #!/bin/bash
-# rtorrent&Rutorrent/CentOS7 installer v0.53
+# rtorrent&Rutorrent/CentOS7 installer v0.54
 #0.5版本增加自动添加防火墙端口
 # 安装说明可参见 https://sadsu.com/?p=210
 
@@ -380,9 +380,10 @@ echo "----------------------------------------"
 echo
 
 
-echo && echo -e "  请选择web服务器类型
-  
- ${yellow}1.${plain} LNMP环境
+echo 
+echo -e "  请选择web服务器类型
+
+${yellow}1.${plain} LNMP环境
  ————————————
  ${yellow}2.${plain} VestaCP环境（nginx）
  ———————————— 
@@ -393,8 +394,11 @@ echo && echo -e "  请选择web服务器类型
  ${yellow}5.${plain} 宝塔面板nginx环境
  ————————————
  ${yellow}6.${plain} 其他环境
- ———————————— " && 
- echo stty erase '^H' && read -p " 请输入数字 [1-6]:" num
+ 
+ ———————————— "  
+
+echo stty erase '^H' && read -p " 请输入数字 [1-6]:" num
+
 case "$num" in
 	1)
 	webtype="lnmp"
