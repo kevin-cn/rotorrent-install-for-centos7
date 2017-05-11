@@ -1,5 +1,5 @@
 #!/bin/bash
-# rtorrent&Rutorrent/CentOS7 installer v0.54
+# rtorrent&Rutorrent/CentOS7 installer v0.55
 #0.5版本增加自动添加防火墙端口
 # 安装说明可参见 https://sadsu.com/?p=210
 
@@ -397,7 +397,7 @@ ${yellow}1.${plain} LNMP环境
  
  ———————————— "  
 
-echo stty erase '^H' && read -p " 请输入数字 [1-6]:" num
+read -p " 请输入数字 [1-6]:" num
 
 case "$num" in
 	1)
