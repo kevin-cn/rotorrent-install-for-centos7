@@ -257,7 +257,10 @@ service httpd restart
 
 config_btn(){
 #设置目录读取权限
-sed -i 's/:\/tmp\/:\/proc\//:\/tmp\/:\/proc\/:\/usr\/bin\/:\/usr\/local\/bin\/:\/home\/rtorrent/g' ${wwwroot}/.user.ini
+btn_file="$wwwroot/.user.ini"
+chattr -i $btn_file
+sed -i 's/:\/tmp\/:\/proc\//:\/tmp\/:\/proc\/:\/usr\/bin\/:\/usr\/local\/bin\/:\/home\/rtorrent/g' $btn_file
+chattr +i $btn_file
 #设置RPC2/节点
 sed -i '/allow 127.0.0.1;/a\    location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /www/server/panel/vhost/nginx/phpfpm_status.conf
 #重启apache
