@@ -1,5 +1,5 @@
 #!/bin/bash
-# rtorrent&Rutorrent/CentOS7 installer v0.5
+# rtorrent&Rutorrent/CentOS7 installer v0.52
 #0.5版本增加自动添加防火墙端口
 # 安装说明可参见 https://sadsu.com/?p=210
 
@@ -155,7 +155,9 @@ elif [ $webtype = "vestacp(nginx)" ]; then
 elif [ $webtype = "vestacp(nginx+apache)" ]; then
     chown -R admin:admin /home/rtorrent
 elif [ $webtype = "apache+phpfpm" ]; then
-    chown -R apache:apache /home/rtorrent    
+    chown -R apache:apache /home/rtorrent  
+elif [ $webtype = "btn" ]; then
+    chown -R www:www /home/rtorrent
 elif [ $webtype = "other" ]; then
     chown -R www:www /home/rtorrent
 fi
@@ -206,6 +208,9 @@ elif [ $webtype = "vestacp(nginx+apache)" ]; then
 elif [ $webtype = "apache+phpfpm" ]; then
     chown -R apache:apache ${webroot}/rutorrent
     config_apache    
+elif [ $webtype = "btn" ]; then
+    chown -R www:www ${webroot}/rutorrent
+    config_btn 
 elif [ $webtype = "other" ]; then
     chown -R www:www ${webroot}/rutorrent
     show_howto
@@ -248,6 +253,20 @@ echo "ProxyPass /RPC2 scgi://localhost:5000/" >> /etc/httpd/conf.d/php.conf
 #重启apache
 service httpd restart
 }
+
+
+config_btn(){
+#设置目录读取权限
+sed -i 's/:\/tmp\/:\/proc\//:\/tmp\/:\/proc\/:\/usr\/bin\/:\/usr\/local\/bin\/:\/home\/rtorrent/g' ${wwwroot}/.user.ini'
+#设置RPC2/节点
+sed -i '/allow 127.0.0.1;/a\    location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /www/server/panel/vhost/nginx/phpfpm_status.conf
+#重启apache
+service httpd restart
+}
+
+
+
+
 
 show_howto(){
 echo "程序安装已结束，请到https://sadsu.com/?p=210查看如何配置RFC2节点以及设置php_admin_value open_basedir的目录访问权限"
@@ -320,9 +339,11 @@ elif [ $webtype = "vestacp(nginx+apache)" ]; then
     hostname1=$(getvestacpwwwroot)
 	wwwroot_ls="/home/admin/web/${hostname1}/public_html" 
 elif [ $webtype = "apache+phpfpm" ]; then
-    wwwroot_ls="/var/www/html/" 
-elif [ $webtype = "other" ]; then
-    wwwroot_ls="/var/www/html/" 
+    wwwroot_ls="/var/www/html" 
+elif [ $webtype = "btn" ]; then
+    wwwroot_ls="/www/wwwroot/default" 
+else
+    wwwroot_ls="/var/www/html"  
 fi
 echo  $wwwroot_ls
 }
@@ -369,9 +390,11 @@ echo && echo -e "  请选择web服务器类型
  ———————————— 
  ${yellow}4.${plain} Apache + PHP-FPM 环境
  ————————————
- ${yellow}5.${plain} 其他环境
+ ${yellow}5.${plain} 宝塔面板nginx环境
+ ————————————
+ ${yellow}6.${plain} 其他环境
  ———————————— " && echo
-	stty erase '^H' && read -p " 请输入数字 [1-5]:" num
+	stty erase '^H' && read -p " 请输入数字 [1-6]:" num
 case "$num" in
 	1)
 	webtype="lnmp"
@@ -386,6 +409,9 @@ case "$num" in
 	webtype="apache+phpfpm"
 	;;
 	5)
+	webtype="btn"
+	;;
+	6)
 	webtype="other"
 	;;
 	*)
