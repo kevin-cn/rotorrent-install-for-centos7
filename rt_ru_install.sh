@@ -1,5 +1,5 @@
 #!/bin/bash
-# rtorrent&Rutorrent/CentOS7 installer v0.52
+# rtorrent&Rutorrent/CentOS7 installer v0.53
 #0.5版本增加自动添加防火墙端口
 # 安装说明可参见 https://sadsu.com/?p=210
 
