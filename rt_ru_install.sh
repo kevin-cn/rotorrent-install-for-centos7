@@ -393,8 +393,8 @@ echo && echo -e "  请选择web服务器类型
  ${yellow}5.${plain} 宝塔面板nginx环境
  ————————————
  ${yellow}6.${plain} 其他环境
- ———————————— " && echo
-	stty erase '^H' && read -p " 请输入数字 [1-6]:" num
+ ———————————— " && 
+ echo stty erase '^H' && read -p " 请输入数字 [1-6]:" num
 case "$num" in
 	1)
 	webtype="lnmp"
@@ -453,4 +453,3 @@ rutorrent_config
 config_firewall
 
 show_end
-
