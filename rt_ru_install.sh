@@ -1,5 +1,5 @@
 #!/bin/bash
-# rtorrent&Rutorrent/CentOS7 installer v0.55
+# rtorrent&Rutorrent/CentOS7 installer v0.56
 #0.5版本增加自动添加防火墙端口
 # 安装说明可参见 https://sadsu.com/?p=210
 
@@ -257,7 +257,7 @@ service httpd restart
 
 config_btn(){
 #设置目录读取权限
-sed -i 's/:\/tmp\/:\/proc\//:\/tmp\/:\/proc\/:\/usr\/bin\/:\/usr\/local\/bin\/:\/home\/rtorrent/g' ${wwwroot}/.user.ini'
+sed -i 's/:\/tmp\/:\/proc\//:\/tmp\/:\/proc\/:\/usr\/bin\/:\/usr\/local\/bin\/:\/home\/rtorrent/g' ${wwwroot}/.user.ini
 #设置RPC2/节点
 sed -i '/allow 127.0.0.1;/a\    location \/RPC2   \{  include scgi_params;scgi_pass localhost:5000; \}' /www/server/panel/vhost/nginx/phpfpm_status.conf
 #重启apache
@@ -395,10 +395,8 @@ ${yellow}1.${plain} LNMP环境
  ————————————
  ${yellow}6.${plain} 其他环境
  
- ———————————— "  
-
-read -p " 请输入数字 [1-6]:" num
-
+ ———————————— " echo
+	stty erase '^H' && read -p " 请输入数字 [1-6]:" num
 case "$num" in
 	1)
 	webtype="lnmp"
