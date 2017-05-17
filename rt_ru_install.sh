@@ -74,6 +74,9 @@ if [ "$release_version" -eq 7 ]; then
 	rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
 	rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm
 else
+        rpm -e epel-release-6-8.noarch
+	rpm -e rpmfusion-nonfree
+	rpm -e rpmfusion-nonfree-release
 	wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
         rpm -ivh epel-release-6-8.noarch.rpm 
 	yum repolist
